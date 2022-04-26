@@ -1,0 +1,16 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Tomcat auto start') {
+            steps {
+                sh '''a=`netstat -an | grep 9090 | grep LISTEN | wc -l`
+if [ $a -eq 0 ]
+then
+        echo "not running"
+        sudo bash /home/ubuntu/tomcat/bin/catalina.sh start
+ fi'''
+            }
+        }
+    }
+}

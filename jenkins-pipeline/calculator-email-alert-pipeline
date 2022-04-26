@@ -1,0 +1,23 @@
+node {
+  try {
+    stage('Git Repo') {
+         git branch: 'main', url: 'https://github.com/namrata4447/Shell_scripting.git'
+        }
+    stage('calculator') {
+           sh ''' cd assig1
+           bash cal.sh $a $b $op'''
+        }
+    notifySuccessful()
+  } catch (e) {
+    currentBuild.result = "FAILED"
+    notifyFailed()
+    throw e
+  }
+}
+def notifySuccessful() {
+  emailext body: 'Job build is successful', subject: 'Jenkins pipeline successful', to: 'namratahatti28@gmail.com'
+}
+def notifyFailed() {
+  emailext body: 'Job build failed', subject: 'Jenkins pipeline failed', to: 'namratahatti28@gmail.com'
+}
+

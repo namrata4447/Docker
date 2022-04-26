@@ -1,0 +1,23 @@
+node {
+  try {
+    stage('Git Repo') {
+            git branch: 'main', url: 'https://github.com/namrata4447/Shell_scripting.git'
+        }
+    stage('salary') {
+            sh ''' cd assig1
+            bash saljenkins.sh '''
+        }
+       notifySuccessful()
+  } catch (e) {
+    currentBuild.result = "FAILED"
+    notifyFailed()
+    throw e
+  }
+}
+def notifySuccessful() {
+ slackSend channel: '#jenkins-alert', message: 'Jenkins pipeline is successful', teamDomain: 'aatmaaniacademy', tokenCredentialId: 'slack notifivation'
+}
+def notifyFailed() {
+ slackSend channel: '#jenkins-alert', message: 'Jenkins pipeline failed', teamDomain: 'aatmaaniacademy', tokenCredentialId: 'slack notifivation'
+}
+

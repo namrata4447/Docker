@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Run Job P,Q,R') {
+            parallel{
+                stage ('Job P'){
+                    steps{
+                        build job: 'Job P', parameters: [string(name: 'a', value: '12'), string(name: 'b', value: '10')]
+                    }
+                }
+                stage ('Job Q'){
+                    steps{
+                        build job: 'Job Q', parameters: [string(name: 'a', value: '12'), string(name: 'b', value: '10')]
+                    }
+                }
+                stage ('Job R'){
+                    steps{
+                        build job: 'Job R', parameters: [string(name: 'a', value: '12'), string(name: 'b', value: '10')]
+                    }
+                }
+            }
+        }
+    }
+}

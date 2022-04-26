@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git repo') {
+            steps {
+                git 'https://github.com/namrata4447/S3Maven.git'
+            }
+        }
+        stage('S3 Upload with aws credentials') {
+            steps {
+                withAWS(credentials: 'jenkins user', region: 'us-east-2') {
+                sh '''cd /var/lib/jenkins/workspace/'S3-jenkins-pipeline'/
+                aws s3 cp /home/ubuntu/S3Maven/S3pipeline.txt s3://namrata-s3job-bucket/
+                '''
+                }
+            }
+        }
+    }
+}
+

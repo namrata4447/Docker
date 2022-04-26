@@ -1,0 +1,30 @@
+node {
+  try {
+    stage('Tomcat Running/Not Running') {
+           sh '''#!/bin/bash
+a=`netstat -an | grep 9090 | grep LISTEN | wc -l`
+if [ $a == 1 ]
+then
+        echo "tomcat is running"
+else
+        echo "tomcat is not running"
+        exit status 1
+fi
+'''
+        }
+    stage('Tomcat status') {
+            
+        }
+       notifySuccessful()
+  } catch (e) {
+    currentBuild.result = "FAILED"
+    notifyFailed()
+    throw e
+  }
+}
+def notifySuccessful() {
+ slackSend channel: '#jenkins-alert', message: 'Tomcat is running', teamDomain: 'aatmaaniacademy', tokenCredentialId: 'slack notifivation'
+}
+def notifyFailed() {
+ slackSend channel: '#jenkins-alert', message: 'Tomcat failed', teamDomain: 'aatmaaniacademy', tokenCredentialId: 'slack notifivation'
+}

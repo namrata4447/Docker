@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Trigger Job C 1st') {
+            steps {
+                sh '''#!/bin/bash
+echo "The addition of two numbers" `expr $a + $b`'''
+build job: 'Job C', parameters: [string(name: 'a', value: '12'), string(name: 'b', value: '10')]
+            }
+        }
+        stage('Trigger Job D') {
+            steps {
+               sh '''#!/bin/bash
+echo "Substract two numbers " `expr $a - $b`'''
+build job: 'Job D', parameters: [string(name: 'a', value: '12'), string(name: 'b', value: '10')]
+            }
+        }
+    }
+}
+
